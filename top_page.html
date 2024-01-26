@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MultiQC Reports</title>
+    <style>
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Select a Report</h1>
+    <select id="reportSelector" onchange="loadReport()">
+        <!-- Options will be added here by JavaScript -->
+    </select>
+
+    <iframe id="reportViewer"></iframe>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('listFiles.php')
+                .then(response => response.json())
+                .then(files => {
+                    const selector = document.getElementById('reportSelector');
+                    files.forEach(file => {
+                        const option = document.createElement('option');
+                        option.value = file;
+                        option.textContent = file;
+                        selector.appendChild(option);
+                    });
+                });
+        });
+
+        function loadReport() {
+            var selectedFile = document.getElementById('reportSelector').value;
+            document.getElementById('reportViewer').src = 'multiqc/' + selectedFile;
+        }
+    </script>
+</body>
+</html>
+
